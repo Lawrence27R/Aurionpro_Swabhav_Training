@@ -1,0 +1,7 @@
+package com.aurionpro.structural.facade.model;
+
+public interface SoundSystem {
+	public void start();
+	public void stop();
+	public void volume(int level);
+}

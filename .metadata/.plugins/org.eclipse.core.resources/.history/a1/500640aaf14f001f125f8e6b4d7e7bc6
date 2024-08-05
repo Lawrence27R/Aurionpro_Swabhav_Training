@@ -1,0 +1,6 @@
+package com.aurionpro.structural.adapter.model;
+
+public interface IItems {
+	public void getItemName();
+	public void getItemPrice();
+}

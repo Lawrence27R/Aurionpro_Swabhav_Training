@@ -1,0 +1,10 @@
+package com.aurionpro.behavioural.observer.model;
+
+public class EmailNotifier implements INotifier{
+
+	@Override
+	public void notifier(Account account, String message) {
+		System.out.println("Sending message through Whatsapp "+account.getName() +message);
+	}
+
+}

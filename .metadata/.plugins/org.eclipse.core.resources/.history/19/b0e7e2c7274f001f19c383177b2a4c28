@@ -1,0 +1,22 @@
+package com.aurionpro.creational.factory.model;
+
+public class CurrentAccount implements IAccount{
+	
+	private int accountNumber;
+	private String name;
+	private double overDraftLimit;
+	
+	
+	@Override
+	public void credit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void debit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

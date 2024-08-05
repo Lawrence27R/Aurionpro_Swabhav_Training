@@ -1,0 +1,23 @@
+package com.aurionpro.model;
+
+public class GuitarSpecs {
+
+	private Builder builder;
+	private String model;
+	private Type type;
+	private int numStrings;
+	private Wood backWood;
+	private Wood topWood;
+	
+	public GuitarSpecs(Builder builder, String model, Type type, int numStrings, Wood backWood, Wood topWood) {
+		super();
+		this.builder = builder;
+		this.model = model;
+		this.type = type;
+		this.numStrings = numStrings;
+		this.backWood = backWood;
+		this.topWood = topWood;
+	}
+	
+	
+}

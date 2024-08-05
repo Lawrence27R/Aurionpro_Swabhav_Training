@@ -1,0 +1,5 @@
+package com.aurionpro.behavioural.observer.model;
+
+public interface INotifer {
+	public Account notifer();
+}

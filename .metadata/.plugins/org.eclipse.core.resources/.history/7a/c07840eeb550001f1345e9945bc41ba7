@@ -1,0 +1,19 @@
+package com.aurionpro.behavioural.observer.test;
+
+import com.aurionpro.behavioural.observer.model.EmailNotifier;
+import com.aurionpro.behavioural.observer.model.INotifier;
+import com.aurionpro.behavioural.observer.model.SMSNotifier;
+import com.aurionpro.behavioural.observer.model.WhatsappNotifier;
+
+public class AccountTest {
+	public static void main(String[] args) {
+		INotifier smsNotifier = new SMSNotifier();
+		INotifier emailNotifier = new EmailNotifier();
+		INotifier whatsappNotifier = new WhatsappNotifier();
+		
+		int choice = 0;
+		switch (choice) {
+		case 1 : sms
+		}
+	}
+}

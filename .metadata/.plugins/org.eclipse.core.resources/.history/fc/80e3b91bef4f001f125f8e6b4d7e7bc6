@@ -1,0 +1,11 @@
+package com.aurionpro.structural.adapter.model;
+
+public class HatAdaptar {
+	private Hat hat;
+
+	public HatAdaptar(Hat hat) {
+		super();
+		this.hat = hat;
+	}
+	
+}

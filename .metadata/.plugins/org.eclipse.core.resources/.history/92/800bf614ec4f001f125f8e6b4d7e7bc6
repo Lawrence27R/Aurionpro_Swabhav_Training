@@ -1,0 +1,7 @@
+package com.aurionpro.structural.facade.model;
+
+public interface IProjector {
+	public IDVDPlayer on();
+	public IDVDPlayer off();
+//	public void input(int sound);
+}

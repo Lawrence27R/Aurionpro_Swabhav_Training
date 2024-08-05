@@ -1,0 +1,11 @@
+package com.aurionpro.structural.composite.test;
+
+public class ComputerComponentsTest {
+	public static void main(String[] args) {
+		ComputerComponents hdd       = new ComputerParts("hdd" , 4000);
+		ComputerComponents keyboard  = new ComputerParts("keyboard",1000);
+		ComputerComponents mouse     = new ComputerParts("mouse",500);
+		ComputerComponents ram       = new ComputerParts("ram",3000);
+		ComputerComponents processor = new ComputerParts("Processor",10000);
+	}
+}

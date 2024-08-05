@@ -1,0 +1,10 @@
+package com.aurionpro.structural.decorators.model;
+
+public class RibbionHat extends HatDecorator{
+
+	public RibbionHat(IHat hat) {
+		super(hat);
+		// TODO Auto-generated constructor stub
+	}
+
+}

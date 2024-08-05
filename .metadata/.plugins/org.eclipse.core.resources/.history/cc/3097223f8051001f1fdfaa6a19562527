@@ -1,0 +1,34 @@
+package com.aurionpro.model;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class OperationsTest1 {
+
+	@Test
+	void testAddition() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSubstraction() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testMultiplication() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testDivision() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testModulus() {
+		fail("Not yet implemented");
+	}
+
+}

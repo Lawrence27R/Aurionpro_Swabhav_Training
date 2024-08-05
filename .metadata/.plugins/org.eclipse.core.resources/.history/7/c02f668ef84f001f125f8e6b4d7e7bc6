@@ -1,0 +1,7 @@
+package com.aurionpro.structural.decorators.test;
+
+public class CarServiceTest {
+	public static void main(String[] args) {
+		
+	}
+}

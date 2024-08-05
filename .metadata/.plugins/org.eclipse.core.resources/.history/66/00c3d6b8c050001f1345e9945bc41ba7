@@ -1,0 +1,5 @@
+package com.aurionpro.bhavioural.strategy.model;
+
+public class OperationStrategy {
+
+}

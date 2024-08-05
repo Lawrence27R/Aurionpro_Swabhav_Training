@@ -1,0 +1,10 @@
+package com.aurionpro.behavioural.observer.model;
+
+public class WhatsappNotifier implements INotifier{
+
+	@Override
+	public void notifier(Account account) {
+		// TODO Auto-generated method stub
+	}
+
+}

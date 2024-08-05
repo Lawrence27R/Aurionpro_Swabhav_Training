@@ -1,0 +1,7 @@
+package com.aurionpro.behavioural.state.model;
+
+public class Packet {
+	IPacketState packetState;
+	
+	
+}

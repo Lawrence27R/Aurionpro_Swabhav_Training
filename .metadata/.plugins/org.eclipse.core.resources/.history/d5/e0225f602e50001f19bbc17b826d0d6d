@@ -1,0 +1,30 @@
+package com.aurionpro.creational.prototype.test;
+
+import com.aurionpro.creational.prototype.model.Bike;
+import com.aurionpro.creational.prototype.model.Car;
+import com.aurionpro.creational.prototype.model.Vehicle;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VehicleTest {
+    public static void main(String[] args) {
+        List<Vehicle> vehicles = List.of(
+            new Bike().setAttributes(1, 2, "Black", "Petrol"),
+            new Car().setAttributes(5, 4, "White", "Electric")
+        );
+
+        List<Vehicle> vehiclesCopy = new ArrayList<>();
+        vehicles.forEach(vehicle -> vehiclesCopy.add(vehicle.clone()));
+
+        System.out.println("Original Objects:-");
+        vehicles.forEach(vehicle -> {
+            System.out.println(vehicle);
+        });
+
+        System.out.println("\n\n\nPrototyped Objects:-");
+        vehiclesCopy.forEach(vehicle -> {
+            System.out.println(vehicle);
+        });
+    }
+}

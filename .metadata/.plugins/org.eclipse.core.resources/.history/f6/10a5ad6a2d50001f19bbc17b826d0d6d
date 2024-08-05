@@ -1,0 +1,5 @@
+package com.aurionpro.creational.prototype.model;
+
+public class Car {
+
+}

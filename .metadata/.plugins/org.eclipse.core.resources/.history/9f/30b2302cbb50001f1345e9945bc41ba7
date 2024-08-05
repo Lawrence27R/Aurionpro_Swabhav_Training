@@ -1,0 +1,5 @@
+package com.aurionpro.behavioural.state.model;
+
+public interface IPacketState {
+
+}

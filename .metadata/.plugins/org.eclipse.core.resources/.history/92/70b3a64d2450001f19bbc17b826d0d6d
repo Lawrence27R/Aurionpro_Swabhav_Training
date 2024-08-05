@@ -1,0 +1,24 @@
+package com.aurionpro.structural.decorators.model;
+
+public class RibbionHat extends HatDecorator{
+
+	public RibbionHat(IHat hat) {
+		super(hat);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "Puma Ribboned Hat";
+	}
+	
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return 1000;
+	}
+
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return "Hat is from Nike Brand";
+	}
+}

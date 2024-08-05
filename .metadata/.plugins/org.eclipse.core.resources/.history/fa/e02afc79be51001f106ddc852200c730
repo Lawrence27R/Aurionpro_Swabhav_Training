@@ -1,0 +1,45 @@
+package com.aurionpro.test;
+
+import java.util.Scanner;
+
+public class TicTacToeGameTest {
+    public static void main(String[] args) {
+        BoardInterface board = new Board();
+        PlayerInterface playerX = new Player('X');
+        PlayerInterface playerO = new Player('O');
+        WinCheckerInterface winChecker = new WinChecker();
+
+        TicTacToeFacade game = new TicTacToeFacade(board, playerX, playerO, winChecker);
+        Scanner scanner = new Scanner(System.in);
+        boolean gameOver = false;
+
+        while (!gameOver) {
+            game.printBoard();
+            System.out.print("Player " + game.getCurrentPlayer().getSymbol() + " enter (row and column): ");
+            int row = scanner.nextInt();
+            int col = scanner.nextInt();
+            System.out.println();
+
+            if (!game.makeMove(row, col)) {
+                System.out.println("Invalid move. Try again!");
+                continue;
+            }
+
+            if (game.checkGameOver()) {
+                System.out.println("Player " + game.getCurrentPlayer().getSymbol() + " has won!");
+                gameOver = true;
+                continue;
+            }
+
+            if (board.isFull()) {
+                System.out.println("The match is a tie!");
+                gameOver = true;
+                continue;
+            }
+
+            game.switchPlayer();
+        }
+
+        game.printBoard();
+    }
+}

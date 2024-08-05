@@ -1,0 +1,28 @@
+public class CompositePatternTest {
+    public static void main(String[] args) {
+        ComputerComponent hdd = new ComputerPart("HDD", 4000);
+        ComputerComponent keyboard = new ComputerPart("Keyboard", 1000);
+        ComputerComponent mouse = new ComputerPart("Mouse", 500);
+        ComputerComponent ram = new ComputerPart("RAM", 3000);
+        ComputerComponent processor = new ComputerPart("Processor", 10000);
+
+        CompositeComponent computer = new CompositeComponent("Computer");
+
+        CompositeComponent motherboard = new CompositeComponent("Motherboard");
+        motherboard.add(ram);
+        motherboard.add(processor);
+
+        CompositeComponent cabinet = new CompositeComponent("Cabinet");
+        cabinet.add(hdd);
+        cabinet.add(motherboard);
+
+        CompositeComponent peripherals = new CompositeComponent("Peripherals");
+        peripherals.add(keyboard);
+        peripherals.add(mouse);
+
+        computer.add(cabinet);
+        computer.add(peripherals);
+
+        computer.showPrice();
+    }
+}

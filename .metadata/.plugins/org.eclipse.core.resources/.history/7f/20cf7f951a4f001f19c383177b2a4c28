@@ -1,0 +1,5 @@
+package com.aurionpro.creational.singleton.test;
+
+public class LoginTest {
+
+}

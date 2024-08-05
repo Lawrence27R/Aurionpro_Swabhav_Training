@@ -1,0 +1,5 @@
+package com.aurionpro.creational.builder.model;
+
+public interface ICustomerBuilder {
+
+}

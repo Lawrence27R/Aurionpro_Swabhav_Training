@@ -1,0 +1,39 @@
+package com.aurionpro.creational.builder.model;
+
+public class Customer {
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String primaryMobileNumber;
+    private final String secondaryMobileNumber;
+
+    public Customer(CustomerBuilder customerBuilder) {
+        this.firstName = customerBuilder.getFirstName();
+        this.lastName = customerBuilder.getLastName();
+        this.email = customerBuilder.getEmail();
+        this.primaryMobileNumber = customerBuilder.getPrimaryMobileNumber();
+        this.secondaryMobileNumber = customerBuilder.getSecondaryMobileNumber();
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPrimaryMobileNumber() {
+        return primaryMobileNumber;
+    }
+
+    public String getSecondaryMobileNumber() {
+        return secondaryMobileNumber;
+    }
+
+}
+

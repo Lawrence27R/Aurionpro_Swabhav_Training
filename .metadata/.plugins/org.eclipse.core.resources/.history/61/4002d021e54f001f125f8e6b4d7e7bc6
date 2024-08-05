@@ -1,0 +1,5 @@
+package com.aurionpro.structural.facade.model;
+
+public class ItalianMenu {
+
+}

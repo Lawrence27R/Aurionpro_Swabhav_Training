@@ -1,0 +1,9 @@
+package com.aurionpro.model;
+
+public class Student {
+	
+	private double StudentPercentageCalulator() {
+		
+	}
+	percentage = 	
+}

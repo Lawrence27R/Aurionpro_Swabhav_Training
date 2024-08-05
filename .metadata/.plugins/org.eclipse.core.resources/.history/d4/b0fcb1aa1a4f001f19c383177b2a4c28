@@ -1,0 +1,8 @@
+package com.aurionpro.creational.singleton.model;
+
+public class Login {
+	
+	public void status() {
+		System.out.println("Login Successfully.");
+	}
+}

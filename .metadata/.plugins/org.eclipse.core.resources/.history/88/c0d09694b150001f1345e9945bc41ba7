@@ -1,0 +1,14 @@
+package com.aurionpro.behavioural.observer.model;
+
+public class SMSNotifier implements INotifier{
+
+	@Override
+	public void notifier(Account account) {
+		Account account;
+		if (Account.deposit()) {
+			System.out.println(+getB"");
+		}
+		return null;
+	}
+
+}

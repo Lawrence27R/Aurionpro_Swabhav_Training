@@ -1,0 +1,5 @@
+package com.aurionpro.structural.decorators.model;
+
+public class CarServiceDecorator {
+	public ICarService carObj;
+}

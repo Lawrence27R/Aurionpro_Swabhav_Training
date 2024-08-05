@@ -1,0 +1,6 @@
+package com.aurionpro.srp.solution.model;
+
+//ISP SOLID PRINCIPLES
+public interface IWorker {
+
+}

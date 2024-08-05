@@ -1,0 +1,6 @@
+package com.aurionpro.behavioural.chainofrespon.model;
+
+public interface ISupportHandler {
+	void handleRequest(Request request);
+    void setNextHandler(ISupportHandler nextHandler);
+}

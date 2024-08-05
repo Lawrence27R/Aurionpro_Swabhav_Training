@@ -1,0 +1,37 @@
+package com.aurionpro.model;
+
+public class TicTacToeFacade {    private Board board;
+    private Player playerX;
+    private Player playerO;
+    private Player currentPlayer;
+    private WinChecker winChecker;
+
+    public TicTacToeFacade() {
+        board = new Board();
+        playerX = new Player('X');
+        playerO = new Player('O');
+        currentPlayer = playerX;
+        winChecker = new WinChecker();
+    }
+
+    public void printBoard() {
+        board.printBoard();
+    }
+
+    public boolean makeMove(int row, int col) {
+        return board.placeMove(row, col, currentPlayer.getSymbol());
+    }
+
+    public boolean checkGameOver() {
+        return winChecker.haveWon(board.getBoard(), currentPlayer.getSymbol());
+    }
+
+    public void switchPlayer() {
+        currentPlayer = (currentPlayer == playerX) ? playerO : playerX;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+}
+

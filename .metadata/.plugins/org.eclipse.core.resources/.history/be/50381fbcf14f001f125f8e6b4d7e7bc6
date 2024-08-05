@@ -1,0 +1,18 @@
+package com.aurionpro.structural.adapter.model;
+
+public class Biscuit implements IItems{
+
+	@Override
+	public void getItemName() {
+		String name = "Parle G";
+		System.out.println("Biscuit name :"+name);
+	}
+
+	@Override
+	public void getItemPrice() {
+		double mrp = 10;
+		System.out.println("Biscuit price: "+mrp);
+		
+	}
+
+}

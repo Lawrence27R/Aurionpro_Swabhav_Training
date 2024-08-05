@@ -1,0 +1,84 @@
+package com.aurionpro.behavioural.observer.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Account {
+	
+	private int accountNumber;
+	private int name;
+	private double balance;
+	private List<INotifier> notifiers;
+
+	public Account(int accountNumber, int name, double balance, List<Inotifiers> notifiers) {
+		super();
+		this.accountNumber = accountNumber;
+		this.name = name;
+		this.balance = balance;
+		this.notifiers = new ArrayList<>();
+	}
+
+
+	public int getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(int accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public int getName() {
+		return name;
+	}
+
+	public void setName(int name) {
+		this.name = name;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public List<INotifier> getnotifiers() {
+		return notifiers;
+	}
+
+	public void setnotifiers(List<INotifier> notifiers) {
+		this.notifiers = notifiers;
+	}
+	
+	public void deposit(double amount) {
+		if (amount < 0) {
+			System.out.println("Enter the amount in positive integers.");
+		}
+		balance += amount;
+		registernotifiers("Deposited amount is " + amount + ", Current Balance: " + balance);
+	}
+	
+	public void withdrawal(double amount) {
+		if(amount < balance) {
+			throw new InsufficientFundsException();
+		}
+		balance -= amount;
+		registernotifiers("Deposited amount is " + amount + ", Current Balance: " + balance);
+	}
+	
+	public boolean registernotifiers(String string) {
+		int choice = 0;
+		if (choice == 1) {
+			return notifiers.add(new SMSnotifier());
+		}
+		if (choice == 2) {
+			return notifiers.add(new Emailnotifier());
+		}
+		if (choice == 3) {
+			return notifiers.add(new Whatsappnotifier());
+		}
+		return false;
+		
+	}
+}

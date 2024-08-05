@@ -1,0 +1,22 @@
+package com.aurionpro.creational.factory.model;
+
+public class SavingsAccount implements IAccount{
+	
+	Account account = new Account(111, 5000, AccountType.SAVINGSACCOUNT);
+	double balance;
+	@Override
+	public void credit(double amount) {
+		balance += amount;
+		System.out.println("Total balance : "+balance);
+		
+	}
+
+	@Override
+	public void debit(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+}

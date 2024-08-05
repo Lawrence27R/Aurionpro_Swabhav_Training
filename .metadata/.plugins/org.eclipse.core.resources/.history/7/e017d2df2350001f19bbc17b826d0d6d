@@ -1,0 +1,22 @@
+package com.aurionpro.structural.decorators.model;
+
+public class StandardHat implements IHat{
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getPrice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

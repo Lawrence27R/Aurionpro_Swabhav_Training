@@ -1,0 +1,27 @@
+package com.aurionpro.creational.prototype.model;
+
+public abstract class Vehicle implements Cloneable {
+	private int seats;
+	private int tyres;
+	private String color;
+	private String fuel;
+
+	public Vehicle() {
+	}
+
+	public Vehicle(Vehicle v) {
+		this.seats = v.seats;
+		this.tyres = v.tyres;
+		this.color = v.color;
+		this.fuel = v.fuel;
+	}
+
+	@Override
+	public abstract Vehicle clone();
+
+	@Override
+	public String toString() {
+		return "Seats: " + this.seats + "\nTyres: " + this.tyres + "\nColor: " + this.color + "\nFuel: " + this.fuel
+				+ "\n";
+	}
+}

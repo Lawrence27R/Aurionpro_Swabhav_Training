@@ -1,0 +1,5 @@
+package com.aurionpro.srp.solution.model;
+
+public class Invoice {
+
+}

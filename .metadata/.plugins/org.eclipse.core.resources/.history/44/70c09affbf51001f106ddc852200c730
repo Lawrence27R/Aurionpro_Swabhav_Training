@@ -1,0 +1,37 @@
+package com.aurionpro.model;
+
+public class TicTacToeGame {
+    private IBoard board;
+    private IPlayer playerX;
+    private IPlayer playerO;
+    private IPlayer currentPlayer;
+    private ICheck winChecker;
+
+    public TicTacToeGame(IBoard board, IPlayer playerX, IPlayer playerO, ICheck winChecker) {
+        this.board = board;
+        this.playerX = playerX;
+        this.playerO = playerO;
+        this.currentPlayer = playerX;
+        this.winChecker = winChecker;
+    }
+
+    public void printBoard() {
+        board.printBoard();
+    }
+
+    public boolean makeMove(int row, int col) {
+        return board.placeMove(row, col, currentPlayer.getSymbol());
+    }
+
+    public boolean checkGameOver() {
+        return winChecker.haveWon(board.getBoard(), currentPlayer.getSymbol());
+    }
+
+    public void switchPlayer() {
+        currentPlayer = (currentPlayer == playerX) ? playerO : playerX;
+    }
+
+    public IPlayer getCurrentPlayer() {
+        return currentPlayer;
+    }
+}

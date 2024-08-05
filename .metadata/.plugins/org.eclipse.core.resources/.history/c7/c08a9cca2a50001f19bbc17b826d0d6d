@@ -1,0 +1,13 @@
+package com.aurionpro.creational.builder.model;
+
+public class Customer {
+	private int customerId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String primaryMobileNumber;
+    private String secondaryMobileNumber;
+
+
+}
+
