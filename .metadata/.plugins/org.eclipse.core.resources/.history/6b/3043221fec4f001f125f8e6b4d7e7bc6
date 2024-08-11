@@ -1,7 +1,0 @@
-package com.aurionpro.structural.facade.model;
-
-public interface ISoundSystem {
-	public IProjector start();
-	public IProjector stop();
-	public void volume(int level);
-}

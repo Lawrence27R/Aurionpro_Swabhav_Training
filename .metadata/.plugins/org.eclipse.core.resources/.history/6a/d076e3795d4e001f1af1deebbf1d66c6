@@ -1,6 +1,0 @@
-package com.aurionpro.srp.voilation.model;
-
-//Dependency Inversion principle Solid Principles
-public class DBLogger {
-
-}

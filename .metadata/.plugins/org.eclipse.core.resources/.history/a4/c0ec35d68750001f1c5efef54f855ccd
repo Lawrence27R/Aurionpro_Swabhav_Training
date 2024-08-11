@@ -1,5 +1,0 @@
-package com.aurionpro.structural.composite.model;
-
-public interface ComputerComposite {
-	public void showPrice();
-}

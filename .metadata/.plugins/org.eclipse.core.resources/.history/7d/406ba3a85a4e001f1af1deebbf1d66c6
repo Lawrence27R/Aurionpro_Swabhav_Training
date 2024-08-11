@@ -1,8 +1,0 @@
-package com.aurionpro.srp.solution.model;
-
-//ISP SOLID PRINCIPLES
-public interface ILunchInterval extends IWorkable{
-	
-	public void eat();
-	public void rest();
-}

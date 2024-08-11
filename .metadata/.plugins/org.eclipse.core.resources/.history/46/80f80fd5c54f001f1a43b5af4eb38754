@@ -1,7 +1,0 @@
-package com.aurionpro.creational.factory.test;
-
-public class AccountTest {
-	public static void main(String[] args) {
-		
-	}
-}

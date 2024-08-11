@@ -1,7 +1,0 @@
-package com.aurionpro.behavioural.observer.model;
-
-public class InsufficientFundsException extends Exception{
-	public String getMessage() {
-		return "The withdrawal amount should be less than the balance";
-	}
-}

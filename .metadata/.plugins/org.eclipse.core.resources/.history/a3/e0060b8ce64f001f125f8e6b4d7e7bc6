@@ -1,9 +1,0 @@
-package com.aurionpro.structural.facade.model;
-
-public class HotelReception {
-
-	public void getIndianMenu(){
-		IHotel indianHotel = new IndianHotel();
-		IMenu menu = indianHotel.getMenu();
-	}
-}

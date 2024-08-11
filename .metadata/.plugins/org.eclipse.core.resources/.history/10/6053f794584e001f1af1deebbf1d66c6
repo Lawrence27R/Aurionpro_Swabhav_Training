@@ -1,7 +1,0 @@
-package com.aurionpro.srp.solution.test;
-
-public class FixedDepositTest {
-	public static void main(String[] args) {
-		
-	}
-}

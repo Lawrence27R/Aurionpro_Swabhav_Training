@@ -1,8 +1,0 @@
-package com.aurionpro.structural.adapter.test;
-
-public class ShoppingCartTest {
-	public static void main(String[] args) {
-		
-		ShoppingCart shoppingCart = new 
-	}
-}

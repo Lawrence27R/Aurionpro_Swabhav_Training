@@ -1,5 +1,0 @@
-package com.aurionpro.creational.singleton.model;
-
-public class Login {
-
-}
