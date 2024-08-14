@@ -160,7 +160,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="DemoServlet" path="/DemoServlet" reloadable="true" source="org.eclipse.jst.jee.server:DemoServlet"/><Context docBase="JSP_APP" path="/JSP_APP" reloadable="true" source="org.eclipse.jst.jee.server:JSP_APP"/><Context docBase="LoginJSPPage_App" path="/LoginJSPPage_App" reloadable="true" source="org.eclipse.jst.jee.server:LoginJSPPage_App"/><Context docBase="JstlApp" path="/JstlApp" reloadable="true" source="org.eclipse.jst.jee.server:JstlApp"/></Host>
+      <Context docBase="DemoServlet" path="/DemoServlet" reloadable="true" source="org.eclipse.jst.jee.server:DemoServlet"/><Context docBase="JSP_APP" path="/JSP_APP" reloadable="true" source="org.eclipse.jst.jee.server:JSP_APP"/><Context docBase="LoginJSPPage_App" path="/LoginJSPPage_App" reloadable="true" source="org.eclipse.jst.jee.server:LoginJSPPage_App"/><Context docBase="JstlApp" path="/JstlApp" reloadable="true" source="org.eclipse.jst.jee.server:JstlApp"/><Context docBase="Bank_MVC_App" path="/Bank_MVC_App" reloadable="true" source="org.eclipse.jst.jee.server:Bank_MVC_App"/></Host>
     </Engine>
   </Service>
 </Server>
