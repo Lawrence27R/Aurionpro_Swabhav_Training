@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.aurionpro.behavioural.state.model.Ordered"/>
-    <fullyQualifiedTypeName name="com.aurionpro.bhavioural.strategy.model.OperationStrategy"/>
-    <fullyQualifiedTypeName name="com.aurionpro.bhavioural.strategy.model.AddOperation"/>
-    <fullyQualifiedTypeName name="com.aurionpro.bhavioural.strategy.model.MultiplyOperation"/>
-    <fullyQualifiedTypeName name="com.aurionpro.bhavioural.strategy.model.IOperation"/>
-    <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.ISupportHandler"/>
-    <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.StaffLevelSupportHandler"/>
-    <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.SupervisourLevelSupportHandler"/>
     <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.ManagerLevelSupportHandler"/>
     <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.SupervisorLevelSupportHandler"/>
     <fullyQualifiedTypeName name="com.aurionpro.model.Operations"/>
@@ -55,9 +47,17 @@
     <fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="org.springframework.context.support.ClassPathXmlApplicationContext"/>
-    <fullyQualifiedTypeName name="org.springframework.context.ApplicationContext"/>
     <fullyQualifiedTypeName name="javax.servlet.annotation.WebServlet"/>
     <fullyQualifiedTypeName name="com.aurionpro.data.AdminDB"/>
     <fullyQualifiedTypeName name="com.aurionpro.data.BankMvcAppDB"/>
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Configurable"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.ComponentScan"/>
+    <fullyQualifiedTypeName name="org.springframework.context.ApplicationContext"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="ApplicationConfig"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.AnnotationConfigApplicationContext"/>
+    <fullyQualifiedTypeName name="ComputerTest"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Value"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 </qualifiedTypeNameHistroy>

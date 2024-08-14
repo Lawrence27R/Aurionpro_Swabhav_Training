@@ -32,9 +32,8 @@
         <div class="form-group">
             <label for="transactionType">Select Transaction Type:</label>
             <select id="transactionType" name="transactionType" class="form-control" onchange="this.form.submit()">
-                <option value="debit" <%= "debit".equals(request.getParameter("transactionType")) ? "selected" : "" %>>Debit</option>
                 <option value="credit" <%= "credit".equals(request.getParameter("transactionType")) ? "selected" : "" %>>Credit</option>
-                <option value="transfer" <%= "transfer".equals(request.getParameter("transactionType")) ? "selected" : "" %>>Transfer</option>
+                <option value="debit" <%= "debit".equals(request.getParameter("transactionType")) ? "selected" : "" %>>Debit</option>
             </select>
         </div>
 
@@ -43,7 +42,15 @@
             <input type="text" id="amount" name="amount" class="form-control" value="<%= request.getParameter("amount") != null ? request.getParameter("amount") : "" %>">
         </div>
 
-        <div class="form-group" style="<%= "transfer".equals(request.getParameter("transactionType")) ? "" : "display:none;" %>">
+        <div class="form-group" style="<%= "debit".equals(request.getParameter("transactionType")) ? "" : "display:none;" %>">
+            <label for="debitType">Debit To:</label>
+            <select id="debitType" name="debitType" class="form-control" onchange="this.form.submit()">
+                <option value="self" <%= "self".equals(request.getParameter("debitType")) ? "selected" : "" %>>Self</option>
+                <option value="other" <%= "other".equals(request.getParameter("debitType")) ? "selected" : "" %>>Other Account</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="<%= "debit".equals(request.getParameter("transactionType")) && "other".equals(request.getParameter("debitType")) ? "" : "display:none;" %>">
             <label for="receiverAccountNum">Receiver Account Number:</label>
             <input type="text" id="receiverAccountNum" name="receiverAccountNum" class="form-control" value="<%= request.getParameter("receiverAccountNum") != null ? request.getParameter("receiverAccountNum") : "" %>">
         </div>

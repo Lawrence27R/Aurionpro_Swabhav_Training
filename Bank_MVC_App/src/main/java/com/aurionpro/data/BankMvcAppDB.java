@@ -175,8 +175,8 @@ public class BankMvcAppDB {
         connectToDb();
         String query = "SELECT senderAccNum, receiverAccNum, typeOfTrans, amount, date FROM transactions WHERE senderAccNum = ? OR receiverAccNum = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setLong(1, customerAccountNum); 
-        preparedStatement.setLong(2, customerAccountNum); 
+        preparedStatement.setLong(1, customerAccountNum);
+        preparedStatement.setLong(2, customerAccountNum);
         return preparedStatement.executeQuery();
     }
 
@@ -188,9 +188,8 @@ public class BankMvcAppDB {
             preparedStatement.setLong(2, customerAccountNum);
             preparedStatement.setDouble(3, amount);
             int result = preparedStatement.executeUpdate();
-//            System.out.println("Debit query executed. Rows affected: " + result); 
             if (result > 0) {
-//                logTransaction(customerAccountNum, null, "debit", amount);
+                logTransaction(customerAccountNum, null, "debit", amount);
                 return true;
             }
         } finally {
@@ -206,9 +205,8 @@ public class BankMvcAppDB {
             preparedStatement.setDouble(1, amount);
             preparedStatement.setLong(2, customerAccountNum);
             int result = preparedStatement.executeUpdate();
-//            System.out.println("Credit query executed. Rows affected: " + result); 
             if (result > 0) {
-//                logTransaction(customerAccountNum, null, "credit", amount); 
+                logTransaction(customerAccountNum, null, "credit", amount);
                 return true;
             }
         } finally {
@@ -232,7 +230,6 @@ public class BankMvcAppDB {
                 preparedStatement.setDouble(1, amount);
                 preparedStatement.setLong(2, receiverAccountNum);
                 int result = preparedStatement.executeUpdate();
-                System.out.println("Transfer credit query executed. Rows affected: " + result); 
                 if (result == 0) {
                     connection.rollback();
                     return false;
@@ -255,18 +252,17 @@ public class BankMvcAppDB {
     private void logTransaction(long senderAccountNum, Long receiverAccountNum, String type, double amount) throws SQLException {
         String query = "INSERT INTO transactions (senderAccNum, receiverAccNum, typeOfTrans, amount, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setLong(1, senderAccountNum); 
+            preparedStatement.setLong(1, senderAccountNum);
             if (receiverAccountNum != null) {
-                preparedStatement.setLong(2, receiverAccountNum); 
+                preparedStatement.setLong(2, receiverAccountNum);
             } else {
-                preparedStatement.setNull(2, java.sql.Types.BIGINT); 
+                preparedStatement.setNull(2, java.sql.Types.BIGINT);
             }
             preparedStatement.setString(3, type);
             preparedStatement.setDouble(4, amount);
-            preparedStatement.setTimestamp(5, new Timestamp(System.currentTimeMillis())); 
+            preparedStatement.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             preparedStatement.executeUpdate();
         }
     }
-
 
 }
