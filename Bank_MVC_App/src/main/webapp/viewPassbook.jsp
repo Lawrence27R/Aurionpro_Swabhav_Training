@@ -11,8 +11,6 @@
 <body>
 
 <div class="container mt-4">
-<!--     <h2 class="text-center">Your Transactions</h2> -->
-
     <table class="table table-striped">
         <thead>
             <tr>

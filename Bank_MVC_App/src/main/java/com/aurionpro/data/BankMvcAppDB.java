@@ -55,23 +55,26 @@ public class BankMvcAppDB {
     
     public boolean isCustomerValid(String customerAccountNum, String password, HttpSession session) {
         connectToDb();
-        String query = "SELECT c.customerId FROM customer c JOIN customeraccount ca ON ca.customerAccountNum = ? AND c.customerPassword = ?";
+        String query = "SELECT c.customerId, ca.customerAccountNum FROM customer c JOIN customeraccount ca ON ca.customerAccountNum = ? AND c.customerPassword = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, customerAccountNum);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int customerId = resultSet.getInt("customerId");
+                Long customerAccountNumFromDb = resultSet.getLong("customerAccountNum");
                 session.setAttribute("customerId", customerId);
+                session.setAttribute("customerAccountNum", customerAccountNumFromDb);
                 return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            closeConnection();
+            closeConnection();
         }
         return false;
     }
+
 
     public boolean addCustomer(String firstname, String lastname, String email, String password, Integer adminId) {
         connectToDb();
@@ -88,7 +91,7 @@ public class BankMvcAppDB {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            closeConnection();
+            closeConnection();
         }
         return false;
     }
@@ -159,10 +162,26 @@ public class BankMvcAppDB {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            closeConnection();
+            closeConnection();
         }
         return false;
     }
+    
+    public int getCustomerIdByAccountNum(String customerAccountNum) throws SQLException {
+        connectToDb();
+        String query = "SELECT customerId FROM customeraccount WHERE customerAccountNum = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, customerAccountNum);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("customerId");
+            }
+        } finally {
+            closeConnection();
+        }
+        return -1; // Return -1 if not found
+    }
+
     
     public ResultSet getAllTransactions() throws SQLException {
         connectToDb();
@@ -180,6 +199,7 @@ public class BankMvcAppDB {
         return preparedStatement.executeQuery();
     }
 
+
     public boolean debitAmount(long customerAccountNum, double amount) throws SQLException {
         connectToDb();
         String query = "UPDATE customeraccount SET customerBalance = customerBalance - ? WHERE customerAccountNum = ? AND customerBalance >= ?";
@@ -189,7 +209,7 @@ public class BankMvcAppDB {
             preparedStatement.setDouble(3, amount);
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
-                logTransaction(customerAccountNum, null, "debit", amount);
+                logTransaction(customerAccountNum, null, "debit", amount); // Log debit transaction
                 return true;
             }
         } finally {
@@ -197,6 +217,7 @@ public class BankMvcAppDB {
         }
         return false;
     }
+
 
     public boolean creditAmount(long customerAccountNum, double amount) throws SQLException {
         connectToDb();
@@ -206,7 +227,7 @@ public class BankMvcAppDB {
             preparedStatement.setLong(2, customerAccountNum);
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
-                logTransaction(customerAccountNum, null, "credit", amount);
+                logTransaction(customerAccountNum, null, "credit", amount); // Log credit transaction
                 return true;
             }
         } finally {
@@ -214,6 +235,7 @@ public class BankMvcAppDB {
         }
         return false;
     }
+
 
     public boolean transferAmount(long senderAccountNum, double amount, long receiverAccountNum) throws SQLException {
         connectToDb();
@@ -249,14 +271,17 @@ public class BankMvcAppDB {
         }
     }
 
+
+
     private void logTransaction(long senderAccountNum, Long receiverAccountNum, String type, double amount) throws SQLException {
         String query = "INSERT INTO transactions (senderAccNum, receiverAccNum, typeOfTrans, amount, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, senderAccountNum);
+            // Use senderAccNum as receiverAccNum if receiverAccountNum is null
             if (receiverAccountNum != null) {
                 preparedStatement.setLong(2, receiverAccountNum);
             } else {
-                preparedStatement.setNull(2, java.sql.Types.BIGINT);
+                preparedStatement.setLong(2, senderAccountNum); // Self-credit or self-debit
             }
             preparedStatement.setString(3, type);
             preparedStatement.setDouble(4, amount);
@@ -264,5 +289,6 @@ public class BankMvcAppDB {
             preparedStatement.executeUpdate();
         }
     }
+
 
 }

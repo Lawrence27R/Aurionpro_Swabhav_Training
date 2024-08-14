@@ -13,99 +13,99 @@ import com.aurionpro.data.BankMvcAppDB;
 
 @WebServlet("/NewTransactionController")
 public class NewTransactionController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String transactionType = request.getParameter("transactionType");
-		String amountStr = request.getParameter("amount");
-		String debitType = request.getParameter("debitType");
-		String receiverAccountNumStr = request.getParameter("receiverAccountNum");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String transactionType = request.getParameter("transactionType");
+        String amountStr = request.getParameter("amount");
+        String debitType = request.getParameter("debitType");
+        String receiverAccountNumStr = request.getParameter("receiverAccountNum");
 
-		HttpSession session = request.getSession();
-		Long customerAccountNum = (Long) session.getAttribute("customerAccountNum");
+        HttpSession session = request.getSession();
+        Long customerAccountNum = (Long) session.getAttribute("customerAccountNum");
 
-		System.out.println("Transaction Type: " + transactionType);
-		System.out.println("Amount: " + amountStr);
-		System.out.println("Debit Type: " + debitType);
-		System.out.println("Receiver Account Number: " + receiverAccountNumStr);
-		System.out.println("Customer Account Number from Session: " + customerAccountNum);
+        System.out.println("Transaction Type: " + transactionType);
+        System.out.println("Amount: " + amountStr);
+        System.out.println("Debit Type: " + debitType);
+        System.out.println("Receiver Account Number: " + receiverAccountNumStr);
+        System.out.println("Customer Account Number from Session: " + customerAccountNum);
 
-		if (customerAccountNum == null) {
-			request.setAttribute("errorMessage", "You must be logged in to perform a transaction.");
-			forwardToForm(request, response);
-			return;
-		}
+        if (customerAccountNum == null) {
+            request.setAttribute("errorMessage", "You must be logged in to perform a transaction.");
+            forwardToForm(request, response);
+            return;
+        }
 
-		double amount = 0.0;
-		Long receiverAccountNum = null;
+        double amount;
+        Long receiverAccountNum = customerAccountNum; // Default to self if not otherwise specified
 
-		try {
-			amount = Double.parseDouble(amountStr);
-			if (amount <= 0) {
-				request.setAttribute("errorMessage", "Amount must be greater than zero.");
-				forwardToForm(request, response);
-				return;
-			}
-		} catch (NumberFormatException e) {
-			request.setAttribute("errorMessage", "Invalid amount.");
-			forwardToForm(request, response);
-			return;
-		}
+        try {
+            amount = Double.parseDouble(amountStr);
+            if (amount <= 0) {
+                request.setAttribute("errorMessage", "Amount must be greater than zero.");
+                forwardToForm(request, response);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Invalid amount.");
+            forwardToForm(request, response);
+            return;
+        }
 
-		if ("debit".equals(transactionType) && "other".equals(debitType)) {
-			try {
-				receiverAccountNum = Long.parseLong(receiverAccountNumStr);
-			} catch (NumberFormatException e) {
-				request.setAttribute("errorMessage", "Invalid receiver account number.");
-				forwardToForm(request, response);
-				return;
-			}
-		}
+        // Handle receiver account number for other transactions
+        if ("debit".equals(transactionType) && "other".equals(debitType)) {
+            try {
+                receiverAccountNum = Long.parseLong(receiverAccountNumStr);
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "Invalid receiver account number.");
+                forwardToForm(request, response);
+                return;
+            }
+        }
 
-		BankMvcAppDB bankDb = new BankMvcAppDB();
-		bankDb.connectToDb(); // Connect to DB
+        BankMvcAppDB bankDb = new BankMvcAppDB();
+        bankDb.connectToDb(); // Connect to DB
 
-		try {
-			boolean success = false;
-			switch (transactionType) {
-			case "credit":
-				success = bankDb.creditAmount(customerAccountNum, amount);
-				if (!success) {
-					request.setAttribute("errorMessage", "Transaction failed.");
-				} else {
-					request.setAttribute("successMessage", "Credit transaction successful.");
-				}
-				break;
-			case "debit":
-				if ("self".equals(debitType)) {
-					success = bankDb.debitAmount(customerAccountNum, amount);
-				} else {
-					success = bankDb.transferAmount(customerAccountNum, amount, receiverAccountNum);
-				}
-				if (!success) {
-					request.setAttribute("errorMessage", "Insufficient balance or transaction failed.");
-				} else {
-					request.setAttribute("successMessage", "Debit transaction successful.");
-				}
-				break;
+        try {
+            boolean success = false;
+            switch (transactionType) {
+                case "credit":
+                    success = bankDb.creditAmount(customerAccountNum, amount);
+                    if (!success) {
+                        request.setAttribute("errorMessage", "Transaction failed.");
+                    } else {
+                        request.setAttribute("successMessage", "Credit transaction successful.");
+                    }
+                    break;
+                case "debit":
+                    if ("self".equals(debitType)) {
+                        success = bankDb.debitAmount(customerAccountNum, amount);
+                    } else {
+                        success = bankDb.transferAmount(customerAccountNum, amount, receiverAccountNum);
+                    }
+                    if (!success) {
+                        request.setAttribute("errorMessage", "Insufficient balance or transaction failed.");
+                    } else {
+                        request.setAttribute("successMessage", "Debit transaction successful.");
+                    }
+                    break;
+                default:
+                    request.setAttribute("errorMessage", "Invalid transaction type.");
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "An error occurred during the transaction: " + e.getMessage());
+        } finally {
+            bankDb.closeConnection(); // Ensure DB connection is closed
+        }
 
-			default:
-				request.setAttribute("errorMessage", "Invalid transaction type.");
-				break;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			request.setAttribute("errorMessage", "An error occurred during the transaction: " + e.getMessage());
-		} finally {
-			bankDb.closeConnection(); // Ensure DB connection is closed
-		}
+        forwardToForm(request, response);
+    }
 
-		forwardToForm(request, response);
-	}
-
-	private void forwardToForm(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.getRequestDispatcher("newTransaction.jsp").forward(request, response);
-	}
+    private void forwardToForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("newTransaction.jsp").forward(request, response);
+    }
 }

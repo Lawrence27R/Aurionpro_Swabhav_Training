@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.aurionpro.data.BankMvcAppDB;
 
@@ -25,8 +26,10 @@ public class LoginController extends HttpServlet {
         BankMvcAppDB bankmvcdb = new BankMvcAppDB();
         boolean isValid = false;
 
+        HttpSession session = request.getSession();
+
         if ("admin".equals(role)) {
-            isValid = bankmvcdb.isAdminValid(username, password, request.getSession());
+            isValid = bankmvcdb.isAdminValid(username, password, session);
             if (isValid) {
                 response.sendRedirect("adminDashboard.jsp");
             } else {
@@ -34,7 +37,7 @@ public class LoginController extends HttpServlet {
                 request.getRequestDispatcher("loginPage.jsp").forward(request, response);
             }
         } else if ("customer".equals(role)) {
-            isValid = bankmvcdb.isCustomerValid(username, password, request.getSession());
+            isValid = bankmvcdb.isCustomerValid(username, password, session);
             if (isValid) {
                 response.sendRedirect("customerDashboard.jsp");
             } else {
