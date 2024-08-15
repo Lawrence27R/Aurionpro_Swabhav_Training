@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-6">	
                 <div class="card mt-5">
                     <div class="card-header text-center">
                         <h3>AurionPro Bank Login</h3>

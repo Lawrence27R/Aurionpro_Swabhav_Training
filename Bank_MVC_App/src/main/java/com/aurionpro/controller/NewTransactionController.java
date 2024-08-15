@@ -23,7 +23,7 @@ public class NewTransactionController extends HttpServlet {
         String receiverAccountNumStr = request.getParameter("receiverAccountNum");
 
         HttpSession session = request.getSession();
-        Long customerAccountNum = (Long) session.getAttribute("customerAccountNum");
+        String customerAccountNum = (String) session.getAttribute("customerAccountNum"); // Corrected to String
 
         System.out.println("Transaction Type: " + transactionType);
         System.out.println("Amount: " + amountStr);
@@ -38,7 +38,7 @@ public class NewTransactionController extends HttpServlet {
         }
 
         double amount;
-        Long receiverAccountNum = customerAccountNum; // Default to self if not otherwise specified
+        String receiverAccountNum = customerAccountNum; // Default to self if not otherwise specified
 
         try {
             amount = Double.parseDouble(amountStr);
@@ -55,9 +55,8 @@ public class NewTransactionController extends HttpServlet {
 
         // Handle receiver account number for other transactions
         if ("debit".equals(transactionType) && "other".equals(debitType)) {
-            try {
-                receiverAccountNum = Long.parseLong(receiverAccountNumStr);
-            } catch (NumberFormatException e) {
+            receiverAccountNum = receiverAccountNumStr;
+            if (receiverAccountNum == null || receiverAccountNum.isEmpty()) {
                 request.setAttribute("errorMessage", "Invalid receiver account number.");
                 forwardToForm(request, response);
                 return;

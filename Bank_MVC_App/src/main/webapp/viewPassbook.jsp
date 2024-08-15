@@ -3,14 +3,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="ISO-8859-1">
-<title>Customer Transactions</title>
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="ISO-8859-1">
+    <title>Your Transactions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container mt-4">
+    <h2>Your Transactions</h2>
+    
+    <!-- Filter Form -->
+    <form method="get" action="ViewPassbookController" class="mb-4">
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="startDate">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="endDate">End Date</label>
+                <input type="date" class="form-control" id="endDate" name="endDate">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="typeOfTrans">Transaction Type</label>
+                <select id="typeOfTrans" name="typeOfTrans" class="form-control">
+                    <option value="">All</option>
+                    <option value="Credit">Credit</option>
+                    <option value="Debit">Debit</option>
+<!--                     <option value="Transfer">Transfer</option> -->
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn btn-primary form-control">Apply Filters</button>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -27,16 +56,24 @@
 
             if (transactions != null) {
                 try {
-                    while (transactions.next()) {
+                    if (!transactions.isBeforeFirst()) { // No rows returned
+            %>
+            <tr>
+                <td colspan="5">No transactions found.</td>
+            </tr>
+            <%
+                    } else {
+                        while (transactions.next()) {
             %>
             <tr>
                 <td><%= transactions.getString("senderAccNum") %></td>
-                <td><%= transactions.getString("receiverAccNum") %></td>
+                <td><%= transactions.getString("receiversAccNum") %></td>
                 <td><%= transactions.getString("typeOfTrans") %></td>
                 <td><%= transactions.getDouble("amount") %></td>
                 <td><%= transactions.getDate("date") %></td>
             </tr>
             <% 
+                        }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -52,7 +89,7 @@
                 <td colspan="5">No transactions found.</td>
             </tr>
             <% 
-            }	
+            }    
             %>
         </tbody>
     </table>

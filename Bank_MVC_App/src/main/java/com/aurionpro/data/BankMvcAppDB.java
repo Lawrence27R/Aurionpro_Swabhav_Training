@@ -57,12 +57,12 @@ public class BankMvcAppDB {
         connectToDb();
         String query = "SELECT c.customerId, ca.customerAccountNum FROM customer c JOIN customeraccount ca ON ca.customerAccountNum = ? AND c.customerPassword = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, customerAccountNum);
+            preparedStatement.setString(1, customerAccountNum); // Changed to String
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int customerId = resultSet.getInt("customerId");
-                Long customerAccountNumFromDb = resultSet.getLong("customerAccountNum");
+                String customerAccountNumFromDb = resultSet.getString("customerAccountNum"); // Changed to String
                 session.setAttribute("customerId", customerId);
                 session.setAttribute("customerAccountNum", customerAccountNumFromDb);
                 return true;
@@ -74,6 +74,7 @@ public class BankMvcAppDB {
         }
         return false;
     }
+
 
 
     public boolean addCustomer(String firstname, String lastname, String email, String password, Integer adminId) {
@@ -182,113 +183,169 @@ public class BankMvcAppDB {
         return -1; // Return -1 if not found
     }
 
+
+    public ResultSet getTransactionsByAccountNum(String accountNum) throws SQLException {
+        String query = "SELECT senderAccNum, receiversAccNum, typeOfTrans, amount, date FROM transactions WHERE senderAccNum = ? OR receiversAccNum = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, accountNum);
+        preparedStatement.setString(2, accountNum);
+        return preparedStatement.executeQuery();
+    }
+    
+    public ResultSet getFilteredTransactions(String accountNum, String startDate, String endDate, String typeOfTrans) throws SQLException {
+        StringBuilder query = new StringBuilder("SELECT senderAccNum, receiversAccNum, typeOfTrans, amount, date FROM transactions WHERE (senderAccNum = ? OR receiversAccNum = ?)");
+        
+        if (startDate != null && !startDate.isEmpty()) {
+            query.append(" AND date >= ?");
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            query.append(" AND date <= ?");
+        }
+        if (typeOfTrans != null && !typeOfTrans.isEmpty()) {
+            query.append(" AND typeOfTrans = ?");
+        }
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+        preparedStatement.setString(1, accountNum);
+        preparedStatement.setString(2, accountNum);
+
+        int paramIndex = 3;
+
+        if (startDate != null && !startDate.isEmpty()) {
+            preparedStatement.setString(paramIndex++, startDate);
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            preparedStatement.setString(paramIndex++, endDate);
+        }
+        if (typeOfTrans != null && !typeOfTrans.isEmpty()) {
+            preparedStatement.setString(paramIndex, typeOfTrans);
+        }
+
+        return preparedStatement.executeQuery();
+    }
+
+
+
     
     public ResultSet getAllTransactions() throws SQLException {
         connectToDb();
-        String query = "SELECT senderAccNum, receiverAccNum, typeOfTrans, amount, date FROM transactions";
+        String query = "SELECT senderAccNum, receiversAccNum, typeOfTrans, amount, date FROM transactions";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         return preparedStatement.executeQuery();
     }
 
-    public ResultSet getCustomerTransactions(long customerAccountNum) throws SQLException {
+    public ResultSet getTransactionsByType(String type) throws SQLException {
         connectToDb();
-        String query = "SELECT senderAccNum, receiverAccNum, typeOfTrans, amount, date FROM transactions WHERE senderAccNum = ? OR receiverAccNum = ?";
+        String query = "SELECT senderAccNum, receiversAccNum, typeOfTrans, amount, date FROM transactions WHERE typeOfTrans = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setLong(1, customerAccountNum);
-        preparedStatement.setLong(2, customerAccountNum);
+        preparedStatement.setString(1, type);
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getTransactionsByDate(String date) throws SQLException {
+        connectToDb();
+        String query = "SELECT senderAccNum, receiversAccNum, typeOfTrans, amount, date FROM transactions WHERE date = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, date);
         return preparedStatement.executeQuery();
     }
 
 
-    public boolean debitAmount(long customerAccountNum, double amount) throws SQLException {
+
+    public ResultSet getCustomerTransactions(String customerAccountNum) throws SQLException {
         connectToDb();
+        String query = "SELECT senderAccNum, receiversAccNum, typeOfTrans, amount, date FROM transactions WHERE senderAccNum = ? OR receiversAccNum = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, customerAccountNum);
+        preparedStatement.setString(2, customerAccountNum);
+        return preparedStatement.executeQuery();
+    }
+
+
+
+    public boolean debitAmount(String customerAccountNum, double amount) throws SQLException {
+        // Removed connection open/close here
         String query = "UPDATE customeraccount SET customerBalance = customerBalance - ? WHERE customerAccountNum = ? AND customerBalance >= ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, amount);
-            preparedStatement.setLong(2, customerAccountNum);
+            preparedStatement.setString(2, customerAccountNum); // Changed to String
             preparedStatement.setDouble(3, amount);
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
                 logTransaction(customerAccountNum, null, "debit", amount); // Log debit transaction
                 return true;
             }
-        } finally {
-            closeConnection();
         }
         return false;
     }
 
-
-    public boolean creditAmount(long customerAccountNum, double amount) throws SQLException {
-        connectToDb();
+    public boolean creditAmount(String customerAccountNum, double amount) throws SQLException {
+        // Removed connection open/close here
         String query = "UPDATE customeraccount SET customerBalance = customerBalance + ? WHERE customerAccountNum = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, amount);
-            preparedStatement.setLong(2, customerAccountNum);
+            preparedStatement.setString(2, customerAccountNum); // Changed to String
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
                 logTransaction(customerAccountNum, null, "credit", amount); // Log credit transaction
                 return true;
             }
-        } finally {
-            closeConnection();
         }
         return false;
     }
 
-
-    public boolean transferAmount(long senderAccountNum, double amount, long receiverAccountNum) throws SQLException {
-        connectToDb();
+    public boolean transferAmount(String senderAccountNum, double amount, String receiversAccNum) throws SQLException {
+        connectToDb(); // Connect to DB
         try {
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(false); // Start transaction
 
+            // Debit from sender account
             if (!debitAmount(senderAccountNum, amount)) {
-                connection.rollback();
+                connection.rollback(); // Rollback if debit fails
                 return false;
             }
 
+            // Credit to receiver account
             String query = "UPDATE customeraccount SET customerBalance = customerBalance + ? WHERE customerAccountNum = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setDouble(1, amount);
-                preparedStatement.setLong(2, receiverAccountNum);
+                preparedStatement.setString(2, receiversAccNum); // Changed to String
                 int result = preparedStatement.executeUpdate();
                 if (result == 0) {
-                    connection.rollback();
+                    connection.rollback(); // Rollback if credit fails
                     return false;
                 }
             }
 
-            logTransaction(senderAccountNum, receiverAccountNum, "transfer", amount);
+            // Log transactions
+            logTransaction(senderAccountNum, receiversAccNum, "debit", amount); // Log debit for sender
+            logTransaction(receiversAccNum, senderAccountNum, "credit", amount); // Log credit for receiver
 
-            connection.commit();
+            connection.commit(); // Commit transaction
             return true;
         } catch (SQLException e) {
-            connection.rollback();
+            connection.rollback(); // Rollback in case of error
             throw e;
         } finally {
-            connection.setAutoCommit(true);
-            closeConnection();
+            connection.setAutoCommit(true); // Reset auto-commit mode
+            closeConnection(); // Close connection here
         }
     }
 
 
 
-    private void logTransaction(long senderAccountNum, Long receiverAccountNum, String type, double amount) throws SQLException {
-        String query = "INSERT INTO transactions (senderAccNum, receiverAccNum, typeOfTrans, amount, date) VALUES (?, ?, ?, ?, ?)";
+    private void logTransaction(String senderAccountNum, String receiversAccNum, String type, double amount) throws SQLException {
+        String query = "INSERT INTO transactions (senderAccNum, receiversAccNum, typeOfTrans, amount, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setLong(1, senderAccountNum);
-            // Use senderAccNum as receiverAccNum if receiverAccountNum is null
-            if (receiverAccountNum != null) {
-                preparedStatement.setLong(2, receiverAccountNum);
-            } else {
-                preparedStatement.setLong(2, senderAccountNum); // Self-credit or self-debit
-            }
+            preparedStatement.setString(1, senderAccountNum); // Changed to String
+            preparedStatement.setString(2, receiversAccNum != null ? receiversAccNum : senderAccountNum); // Self-credit or self-debit
             preparedStatement.setString(3, type);
             preparedStatement.setDouble(4, amount);
             preparedStatement.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             preparedStatement.executeUpdate();
         }
     }
+
 
 
 }

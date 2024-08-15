@@ -3,15 +3,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="ISO-8859-1">
-<title>View Transactions</title>
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="ISO-8859-1">
+    <title>View Transactions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-<!--     <h2 class="text-center">View Transactions</h2> -->
+    <h2 class="text-center">View Transactions</h2>
+
+    <!-- Filter Form -->
+    <form class="form-inline mb-3" method="get" action="ViewTransactions">
+        <div class="form-group">
+            <label for="type">Transaction Type:</label>
+            <select class="form-control ml-2" name="type" id="type">
+                <option value="">All</option>
+                <option value="credit">Credit</option>
+                <option value="debit">Debit</option>
+<!--                 <option value="transfer">Transfer</option> -->
+            </select>
+        </div>
+        <div class="form-group ml-3">
+            <label for="date">Date:</label>
+            <input type="date" class="form-control ml-2" name="date" id="date">
+        </div>
+        <button type="submit" class="btn btn-primary ml-3">Filter</button>
+    </form>
 
     <!-- Transactions Table -->
     <table class="table table-striped">
@@ -26,11 +44,9 @@
         </thead>
         <tbody>
             <% 
-            // Retrieve the result set and error message from the request attributes
             ResultSet rs = (ResultSet) request.getAttribute("transactions");
             String errorMessage = (String) request.getAttribute("errorMessage");
 
-            // Display error message if any
             if (errorMessage != null) {
             %>
                 <tr>
@@ -41,11 +57,11 @@
                 try {
                     if (rs != null) {
                         while (rs.next()) {
-                            String senderAccountNum = rs.getString("senderAccountNum");
-                            String receiverAccountNum = rs.getString("receiverAccountNum");
-                            String transactionType = rs.getString("transactionType");
+                            String senderAccountNum = rs.getString("senderAccNum");
+                            String receiverAccountNum = rs.getString("receiversAccNum");
+                            String transactionType = rs.getString("typeOfTrans");
                             double amount = rs.getDouble("amount");
-                            java.sql.Date transactionDate = rs.getDate("transactionDate");
+                            java.sql.Date transactionDate = rs.getDate("date");
             %>
             <tr>
                 <td><%= senderAccountNum %></td>
@@ -65,7 +81,6 @@
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    // Display the SQL error message
             %>
                 <tr>
                     <td colspan="5" class="text-danger">Error: <%= e.getMessage() %></td>
