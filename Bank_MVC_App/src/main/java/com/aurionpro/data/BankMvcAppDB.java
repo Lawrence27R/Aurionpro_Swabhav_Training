@@ -53,16 +53,18 @@ public class BankMvcAppDB {
         return false;
     }
     
-    public boolean isCustomerValid(String customerAccountNum, String password, HttpSession session) {
+    public boolean isCustomerValid(String emailId, String password, HttpSession session) {
         connectToDb();
-        String query = "SELECT c.customerId, ca.customerAccountNum FROM customer c JOIN customeraccount ca ON ca.customerAccountNum = ? AND c.customerPassword = ?";
+        String query = "SELECT c.customerId, a.customerAccountNum FROM customer c " +
+                       "JOIN customeraccount a ON c.customerId = a.customerId " +
+                       "WHERE c.emailId = ? AND c.customerPassword = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, customerAccountNum); // Changed to String
+            preparedStatement.setString(1, emailId);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int customerId = resultSet.getInt("customerId");
-                String customerAccountNumFromDb = resultSet.getString("customerAccountNum"); // Changed to String
+                String customerAccountNumFromDb = resultSet.getString("customerAccountNum");
                 session.setAttribute("customerId", customerId);
                 session.setAttribute("customerAccountNum", customerAccountNumFromDb);
                 return true;
@@ -74,6 +76,8 @@ public class BankMvcAppDB {
         }
         return false;
     }
+
+
 
 
 
