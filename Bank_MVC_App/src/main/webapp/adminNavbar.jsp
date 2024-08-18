@@ -19,7 +19,7 @@
                 <li class="nav-item"><a class="nav-link" href="adminDashboard.jsp?section=addBankAccount">Add Bank Account</a></li>
                 <li class="nav-item"><a class="nav-link" href="adminDashboard.jsp?section=viewCustomers">View Customers</a></li>
                 <li class="nav-item"><a class="nav-link" href="adminDashboard.jsp?section=viewTransactions">View Transactions</a></li>
-                <li class="nav-item"><a class="nav-link" href="adminDashboard.jsp?section=logout">LogOut</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout.jsp">LogOut</a></li>
             </ul>
         </div>
     </nav>

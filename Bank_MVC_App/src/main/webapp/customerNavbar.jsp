@@ -19,7 +19,7 @@
                 <li class="nav-item"><a class="nav-link" href="customerDashboard.jsp?section=viewPassbook">View Passbook</a></li>
                 <li class="nav-item"><a class="nav-link" href="customerDashboard.jsp?section=newTransaction">New Transaction</a></li>
                 <li class="nav-item"><a class="nav-link" href="customerDashboard.jsp?section=editProfile">Edit Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="customerDashboard.jsp?section=logout">LogOut</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout.jsp">LogOut</a></li>
             </ul>
         </div>
     </nav>

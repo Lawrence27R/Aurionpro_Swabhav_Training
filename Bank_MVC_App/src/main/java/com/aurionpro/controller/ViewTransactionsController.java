@@ -16,11 +16,11 @@ public class ViewTransactionsController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BankMvcAppDB db = new BankMvcAppDB();
+        ResultSet transactions = null;
+
         try {
             String filterType = request.getParameter("type");
             String filterDate = request.getParameter("date");
-
-            ResultSet transactions;
 
             if (filterType != null && !filterType.isEmpty()) {
                 transactions = db.getTransactionsByType(filterType);
@@ -31,14 +31,12 @@ public class ViewTransactionsController extends HttpServlet {
             }
 
             request.setAttribute("transactions", transactions);
-            request.getRequestDispatcher("viewTransactions.jsp").forward(request, response);
-
         } catch (SQLException e) {
-            e.printStackTrace();
             request.setAttribute("errorMessage", "Error retrieving transactions: " + e.getMessage());
-            request.getRequestDispatcher("viewTransactions.jsp").forward(request, response);
         } finally {
             db.closeConnection();
         }
+
+        request.getRequestDispatcher("viewTransactions.jsp").forward(request, response);
     }
 }

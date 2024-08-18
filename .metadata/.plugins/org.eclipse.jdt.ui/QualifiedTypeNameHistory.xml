@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.ManagerLevelSupportHandler"/>
     <fullyQualifiedTypeName name="com.aurionpro.behavioural.chainofrespon.model.SupervisorLevelSupportHandler"/>
     <fullyQualifiedTypeName name="com.aurionpro.model.Operations"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.AfterEach"/>
@@ -41,7 +40,6 @@
     <fullyQualifiedTypeName name="java.io.PrintWriter"/>
     <fullyQualifiedTypeName name="javax.servlet.http.Cookie"/>
     <fullyQualifiedTypeName name="com.aurionpro.database.UserDbUtil"/>
-    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="com.aurionpro.entity.User"/>
     <fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
@@ -60,4 +58,6 @@
     <fullyQualifiedTypeName name="ComputerTest"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Value"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="com.aurionpro.entity.Transaction"/>
 </qualifiedTypeNameHistroy>

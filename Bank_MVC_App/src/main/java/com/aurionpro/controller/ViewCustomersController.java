@@ -16,18 +16,22 @@ public class ViewCustomersController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sortBy = request.getParameter("sortBy");
+        String searchName = request.getParameter("searchName");
+        String viewAll = request.getParameter("viewAll");
 
         BankMvcAppDB bankmvcdb = new BankMvcAppDB();
         try {
-            ResultSet resultset = bankmvcdb.getAllCustomers(sortBy);
+            ResultSet resultset = "true".equals(viewAll) ? 
+                bankmvcdb.getAllCustomers(null, null) : 
+                bankmvcdb.getAllCustomers(sortBy, searchName);
+
             request.setAttribute("customers", resultset);
             request.getRequestDispatcher("/viewCustomers.jsp").forward(request, response);
         } catch (SQLException e) {
-            e.printStackTrace();
             request.setAttribute("errorMessage", "Error retrieving customer data: " + e.getMessage());
             request.getRequestDispatcher("/viewCustomers.jsp").forward(request, response);
         } finally {
-        	bankmvcdb.closeConnection();
+            bankmvcdb.closeConnection();
         }
     }
 }

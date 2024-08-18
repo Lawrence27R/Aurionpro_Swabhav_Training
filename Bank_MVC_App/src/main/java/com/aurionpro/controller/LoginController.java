@@ -14,39 +14,35 @@ import com.aurionpro.data.BankMvcAppDB;
 public class LoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public LoginController() {
-        super();
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String role = request.getParameter("role");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         BankMvcAppDB bankmvcdb = new BankMvcAppDB();
-        boolean isValid = false;
-
         HttpSession session = request.getSession();
+        session.setAttribute("error", null);
+
+        boolean validUser = false;
 
         if ("admin".equals(role)) {
-            isValid = bankmvcdb.isAdminValid(username, password, session);
-            if (isValid) {
+            validUser = bankmvcdb.isAdminValid(username, password, session);
+            if (validUser) {
+                session.setAttribute("adminId", bankmvcdb.getAdminId(username));
                 response.sendRedirect("adminDashboard.jsp");
-            } else {
-                request.setAttribute("error", true);
-                request.getRequestDispatcher("loginPage.jsp").forward(request, response);
+                return;
             }
-        } else if ("customer".equals(role)) {
-            isValid = bankmvcdb.isCustomerValid(username, password, session);
-            if (isValid) {
+        } 
+
+        if ("customer".equals(role)) {
+            validUser = bankmvcdb.isCustomerValid(username, password, session);
+            if (validUser) {
                 response.sendRedirect("customerDashboard.jsp");
-            } else {
-                request.setAttribute("error", true);
-                request.getRequestDispatcher("loginPage.jsp").forward(request, response);
+                return;
             }
-        } else {
-            request.setAttribute("error", true);
-            request.getRequestDispatcher("loginPage.jsp").forward(request, response);
         }
+
+        request.setAttribute("error", true);
+        request.getRequestDispatcher("loginPage.jsp").forward(request, response);
     }
 }

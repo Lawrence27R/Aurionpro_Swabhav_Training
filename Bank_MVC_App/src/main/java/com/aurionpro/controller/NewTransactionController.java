@@ -23,7 +23,7 @@ public class NewTransactionController extends HttpServlet {
         String receiverAccountNumStr = request.getParameter("receiverAccountNum");
 
         HttpSession session = request.getSession();
-        String customerAccountNum = (String) session.getAttribute("customerAccountNum"); // Corrected to String
+        String customerAccountNum = (String) session.getAttribute("customerAccountNum"); 
 
         System.out.println("Transaction Type: " + transactionType);
         System.out.println("Amount: " + amountStr);
@@ -38,7 +38,7 @@ public class NewTransactionController extends HttpServlet {
         }
 
         double amount;
-        String receiverAccountNum = customerAccountNum; // Default to self if not otherwise specified
+        String receiverAccountNum = customerAccountNum; 
 
         try {
             amount = Double.parseDouble(amountStr);
@@ -53,7 +53,6 @@ public class NewTransactionController extends HttpServlet {
             return;
         }
 
-        // Handle receiver account number for other transactions
         if ("debit".equals(transactionType) && "other".equals(debitType)) {
             receiverAccountNum = receiverAccountNumStr;
             if (receiverAccountNum == null || receiverAccountNum.isEmpty()) {
@@ -64,7 +63,7 @@ public class NewTransactionController extends HttpServlet {
         }
 
         BankMvcAppDB bankDb = new BankMvcAppDB();
-        bankDb.connectToDb(); // Connect to DB
+        bankDb.connectToDb(); 
 
         try {
             boolean success = false;
@@ -97,7 +96,7 @@ public class NewTransactionController extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An error occurred during the transaction: " + e.getMessage());
         } finally {
-            bankDb.closeConnection(); // Ensure DB connection is closed
+            bankDb.closeConnection(); 
         }
 
         forwardToForm(request, response);

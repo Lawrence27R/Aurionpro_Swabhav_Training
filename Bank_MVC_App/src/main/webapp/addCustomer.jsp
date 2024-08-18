@@ -1,33 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Customer</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-<!--         <h3 class="text-center">Add New Customer</h3> -->
-        
-        <!-- Display Customer Added Success or Error Message -->
         <%
             String success = request.getParameter("success");
             String error = request.getParameter("error");
             if ("true".equals(success)) {
         %>
-            <div class="alert alert-success" role="alert">
-                Customer added successfully!
-            </div>
+            <div class="alert alert-success">Customer added successfully!</div>
         <%
-            } else if ("true".equals(error)) {
+            } else if (error != null) {
+                String errorMessage = "Error adding customer.";
+                if ("emailExists".equals(error)) errorMessage = "Email ID already exists.";
+                else if ("invalidName".equals(error)) errorMessage = "First and last name must contain only alphabets.";
+                else if ("invalidPassword".equals(error)) errorMessage = "Password must be at least 8 characters long and contain at least one special character.";
         %>
-            <div class="alert alert-danger" role="alert">
-                Error adding customer. Please try again.
-            </div>
+            <div class="alert alert-danger"><%= errorMessage %></div>
         <%
             }
         %>
@@ -52,9 +47,12 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="reset" class="btn btn-secondary">Cancel</button>
         </form>
+
+        <div class="mt-3">
+            <a href="adminDashboard.jsp" class="btn btn-info">Go to Admin Dashboard</a>
+        </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -12,36 +12,45 @@ import com.aurionpro.data.BankMvcAppDB;
 
 @WebServlet("/AddCustomerController")
 public class AddCustomerController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public AddCustomerController() {
-        super();
-    }
+	public AddCustomerController() {
+		super();
+	}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer adminId = (Integer) session.getAttribute("adminId");
-        
-        if (adminId == null) {
-            response.sendRedirect("loginPage.jsp");
-            return;
-        }
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Integer adminId = (Integer) session.getAttribute("adminId");
 
-        String firstname = request.getParameter("firstname");
-        String lastname = request.getParameter("lastname");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+		if (adminId == null) {
+			response.sendRedirect("loginPage.jsp");
+			return;
+		}
 
-        BankMvcAppDB bankmvcdb = new BankMvcAppDB();
-        boolean isCustomerAdded = bankmvcdb.addCustomer(firstname, lastname, email, password, adminId);
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
 
-        if (isCustomerAdded) {
-            response.sendRedirect("adminDashboard.jsp?section=addCustomer&success=true");
-        } else {
-            response.sendRedirect("adminDashboard.jsp?section=addCustomer&error=true");
-        }
-    }
+		String nameRegex = "^[a-zA-Z]+$";
+		if (!firstname.matches(nameRegex) || !lastname.matches(nameRegex)) {
+			response.sendRedirect("addCustomer.jsp?error=invalidName");
+			return;
+		}
 
+		String passwordRegex = ".{8,}";
+		if (!password.matches(passwordRegex)) {
+			response.sendRedirect("addCustomer.jsp?error=invalidPassword");
+			return;
+		}
 
+		BankMvcAppDB bankmvcdb = new BankMvcAppDB();
+		boolean isCustomerAdded = bankmvcdb.addCustomer(firstname, lastname, email, password, adminId);
+
+		String redirectUrl = isCustomerAdded ? "adminDashboard.jsp?section=addCustomer&success=true"
+				: "addCustomer.jsp?error=emailExists";
+
+		response.sendRedirect(redirectUrl);
+	}
 }
-

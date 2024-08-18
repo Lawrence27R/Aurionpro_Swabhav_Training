@@ -7,40 +7,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Home</title>
     <style>
-    .content-section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 60vh;
-    }
+        .content-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Dynamic Content Section -->
         <div class="content-section mt-4">
-            <% 
-            String section = request.getParameter("section");
-            if ("addCustomer".equals(section)) {
-                %><jsp:include page="addCustomer.jsp" />
-            <% 
-            } else if ("addBankAccount".equals(section)) {
-                %><jsp:include page="addBankAccount.jsp" />
-            <% 
-            } else if ("viewCustomers".equals(section)) {
-                %><jsp:include page="viewCustomers.jsp" />
-            <% 
-            } else if ("viewTransactions".equals(section)) {
-                %><jsp:include page="viewTransactions.jsp" />
-            <% 
-            } else if ("logout".equals(section)) {
-                session.invalidate();
-                response.sendRedirect("loginPage.jsp");
-                return;
-            } else {
-                %><h2>Welcome to the Admin Dashboard</h2>
-            <% 
-            }
+            <%
+                String section = request.getParameter("section");
+
+                switch (section) {
+                    case "addCustomer":
+                        %><jsp:include page="addCustomer.jsp" /><%
+                        break;
+                    case "addBankAccount":
+                        %><jsp:include page="addBankAccount.jsp" /><%
+                        break;
+                    case "viewCustomers":
+                        %><jsp:include page="viewCustomers.jsp" /><%
+                        break;
+                    case "viewTransactions":
+                        %><jsp:include page="viewTransactions.jsp" /><%
+                        break;
+                    case "logout":
+                        session.invalidate();
+                        response.sendRedirect("logout.jsp");
+                        return;
+                    default:
+                        %><h2>Welcome to the Admin Dashboard</h2><%
+                        break;
+                }
             %>
         </div>
     </div>

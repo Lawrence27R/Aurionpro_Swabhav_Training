@@ -23,34 +23,27 @@ public class CustomerTransactionsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("customerAccountNum") == null) {
-            response.sendRedirect("login.jsp"); // Redirect to login if not logged in
+            response.sendRedirect("loginPage.jsp");
             return;
         }
 
         String customerAccountNum = (String) session.getAttribute("customerAccountNum");
-
         BankMvcAppDB bankDb = new BankMvcAppDB();
         List<Transaction> transactionList = new ArrayList<>();
-        try {
-            ResultSet transactions = bankDb.getCustomerTransactions(customerAccountNum);
+
+        try (ResultSet transactions = bankDb.getCustomerTransactions(customerAccountNum)) {
             while (transactions.next()) {
                 Transaction transaction = new Transaction(
-                    transactions.getString("senderAccNum"),
-                    transactions.getString("receiversAccNum"),
-                    transactions.getString("typeOfTrans"),
-                    transactions.getDouble("amount"),
-                    transactions.getDate("date")
                 );
                 transactionList.add(transaction);
             }
             request.setAttribute("transactions", transactionList);
-            request.getRequestDispatcher("customerTransactions.jsp").forward(request, response);
         } catch (SQLException e) {
-            e.printStackTrace();
             request.setAttribute("errorMessage", "Error fetching transactions: " + e.getMessage());
-            request.getRequestDispatcher("customerTransactions.jsp").forward(request, response);
         } finally {
             bankDb.closeConnection();
         }
+
+        request.getRequestDispatcher("customerTransactions.jsp").forward(request, response);
     }
 }

@@ -5,7 +5,6 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Your Transactions</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +12,6 @@
 <div class="container mt-4">
     <h2>Your Transactions</h2>
     
-    <!-- Filter Form -->
     <form method="get" action="ViewPassbookController" class="mb-4">
         <div class="form-row">
             <div class="form-group col-md-3">
@@ -30,7 +28,6 @@
                     <option value="">All</option>
                     <option value="Credit">Credit</option>
                     <option value="Debit">Debit</option>
-<!--                     <option value="Transfer">Transfer</option> -->
                 </select>
             </div>
             <div class="form-group col-md-3">
@@ -53,16 +50,11 @@
         <tbody>
             <% 
             ResultSet transactions = (ResultSet) request.getAttribute("transactions");
+            boolean hasTransactions = transactions != null;
 
-            if (transactions != null) {
+            if (hasTransactions) {
                 try {
-                    if (!transactions.isBeforeFirst()) { // No rows returned
-            %>
-            <tr>
-                <td colspan="5">No transactions found.</td>
-            </tr>
-            <%
-                    } else {
+                    if (transactions.isBeforeFirst()) {
                         while (transactions.next()) {
             %>
             <tr>
@@ -74,9 +66,14 @@
             </tr>
             <% 
                         }
+                    } else {
+            %>
+            <tr>
+                <td colspan="5">No transactions found.</td>
+            </tr>
+            <% 
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
             %>
             <tr>
                 <td colspan="5" class="text-danger">Error: <%= e.getMessage() %></td>
@@ -93,9 +90,12 @@
             %>
         </tbody>
     </table>
+
+    <div class="mt-3">
+        <a href="customerDashboard.jsp" class="btn btn-info">Go to Customer Dashboard</a>
+    </div>
 </div>
 
-<!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

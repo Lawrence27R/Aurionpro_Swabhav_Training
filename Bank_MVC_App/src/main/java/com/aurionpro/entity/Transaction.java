@@ -1,35 +1,63 @@
 package com.aurionpro.entity;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Transaction {
-    private String senderAccNum;
-    private String receiversAccNum;
-    private String typeOfTrans;
+    private int transactionId;
+    private Timestamp transactionDate;
     private double amount;
-    private Date date;
-
-    public Transaction(String senderAccNum, String receiversAccNum, String typeOfTrans, double amount, Date date) {
-        this.senderAccNum = senderAccNum;
-        this.receiversAccNum = receiversAccNum;
-        this.typeOfTrans = typeOfTrans;
-        this.amount = amount;
-        this.date = date;
+    private String transactionType;
+    
+    public Transaction() {
+    	
     }
+    
+	public Transaction(int transactionId, Timestamp transactionDate, double amount, String transactionType) {
+		super();
+		this.transactionId = transactionId;
+		this.transactionDate = transactionDate;
+		this.amount = amount;
+		this.transactionType = transactionType;
+	}
 
-    // Getters and Setters
-    public String getSenderAccNum() { return senderAccNum; }
-    public void setSenderAccNum(String senderAccNum) { this.senderAccNum = senderAccNum; }
+	public int getTransactionId() {
+		return transactionId;
+	}
 
-    public String getReceiversAccNum() { return receiversAccNum; }
-    public void setReceiversAccNum(String receiversAccNum) { this.receiversAccNum = receiversAccNum; }
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
 
-    public String getTypeOfTrans() { return typeOfTrans; }
-    public void setTypeOfTrans(String typeOfTrans) { this.typeOfTrans = typeOfTrans; }
+	public Timestamp getTransactionDate() {
+		return transactionDate;
+	}
 
-    public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
+	public void setTransactionDate(Timestamp transactionDate) {
+		this.transactionDate = transactionDate;
+	}
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public String getTransactionType() {
+		return transactionType;
+	}
+
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction [transactionId=" + transactionId + ", transactionDate=" + transactionDate + ", amount="
+				+ amount + ", transactionType=" + transactionType + "]";
+	}
+    
+    
 }

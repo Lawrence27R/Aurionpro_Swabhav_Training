@@ -14,9 +14,13 @@ public class EditProfileController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        int customerId = (Integer) session.getAttribute("customerId");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("customerId") == null) {
+            response.sendRedirect("loginPage.jsp");
+            return;
+        }
 
+        int customerId = (Integer) session.getAttribute("customerId");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -25,10 +29,10 @@ public class EditProfileController extends HttpServlet {
         BankMvcAppDB db = new BankMvcAppDB();
         boolean isUpdated = db.updateCustomerProfile(customerId, firstName, lastName, email, password);
 
-        if (isUpdated) {
-            response.sendRedirect("editProfile.jsp?updateSuccess=true");
-        } else {
-            response.sendRedirect("editProfile.jsp?updateFailed=true");
-        }
+        String redirectUrl = isUpdated 
+            ? "editProfile.jsp?updateSuccess=true" 
+            : "editProfile.jsp?updateFailed=true";
+        
+        response.sendRedirect(redirectUrl);
     }
 }
